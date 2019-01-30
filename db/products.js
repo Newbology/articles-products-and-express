@@ -6,6 +6,14 @@ function getAllproducts() {
   return productsData;
 }
 
+function getProductId(id, productData) {
+  let productById = productsData.find(product => {
+    return product.id === id;
+  });
+  console.log('productById', productById);
+  return productById;
+}
+
 function addProduct(product) {
   product.id = productId++;
   productsData.push(product);
@@ -30,4 +38,10 @@ function updateProduct(id, newProduct) {
   return oldProduct;
 }
 
-module.exports = { addProduct, getAllproducts, updateProduct, deleteProduct };
+module.exports = {
+  addProduct,
+  getProductId,
+  getAllproducts,
+  updateProduct,
+  deleteProduct
+};

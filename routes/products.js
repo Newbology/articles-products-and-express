@@ -4,9 +4,18 @@ const dataBase = require('../db/products');
 
 router.get('/', (req, res) => {
   let products = dataBase.getAllproducts();
-  res.json(products);
-  res.end();
+  res.render('products/index', { products });
 });
+
+router.get('/:id', (req, res) => {
+  let id = Number(req.params.id);
+  let product = req.body;
+  dataBase.getProductId(id, product);
+  res.render('products/:id', { id, product });
+});
+
+// router.get('/:id/edit', (req, res) => {});
+// router.get('/new', (req, res) => {});
 
 router.post('/', (req, res) => {
   let product = req.body;
@@ -14,6 +23,7 @@ router.post('/', (req, res) => {
   res.send('information was sent');
   res.end();
 });
+
 router.delete('/:id', (req, res) => {
   let id = Number(req.params.id);
   dataBase.deleteProduct(id);
