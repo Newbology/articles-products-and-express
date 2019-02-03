@@ -6,11 +6,11 @@ function getAllproducts() {
   return productsData;
 }
 
-function getProductId(id, productData) {
+function getProductId(id) {
   let productById = productsData.find(product => {
     return product.id === id;
   });
-  console.log('productById', productById);
+
   return productById;
 }
 
@@ -23,8 +23,8 @@ function deleteProduct(id) {
   let newArr = productsData.filter(productsData => {
     return productsData.id !== id;
   });
-
-  return (productsData = newArr);
+  productsData = newArr;
+  return true;
 }
 
 function updateProduct(id, newProduct) {
