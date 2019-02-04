@@ -1,0 +1,18 @@
+<h1>New Product</h1>
+{{#each temp}}
+<h1> {{ name }} </h1>
+<h2> {{ price }} </h2>
+<h2> {{ inventory }} Available. </h2>
+{{/each}}
+{{!-- {{#each products}}
+<form action='/products/' method='POST'>
+  <label for='name'>{{name}}</label>
+  <input type='text' name='name' id='name'>
+  <h1>{{name}}</h1>
+  <label for="price">{{price}}</label>
+  <input type="text" name="price" id="price">
+  <label for="inventory">{{inventory}}</label>
+  <input type="inventory" name='inventory' id="inventory">
+  <input type="submit" value="Submit">
+  {{/each}}
+</form> --}}

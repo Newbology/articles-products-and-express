@@ -6,11 +6,10 @@ function getAllproducts() {
   return productsData;
 }
 
-function getProductId(id, productData) {
+function getProductId(id, product) {
   let productById = productsData.find(product => {
     return product.id === id;
   });
-  console.log('productById', productById);
   return productById;
 }
 

@@ -10,18 +10,27 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   let id = Number(req.params.id);
   let product = req.body;
-  dataBase.getProductId(id, product);
-  res.render('products/:id', { id, product });
+  let temp = [];
+
+  temp.push(dataBase.getProductId(id, product));
+  console.log('temp', temp);
+  res.render('products/new', { temp });
 });
 
-// router.get('/:id/edit', (req, res) => {});
+// router.get('/:id/edit', (req, res) => {
+//   let id = Number(req.params.id);
+
+//   res.render('templates/products/product', { products });
+// });
 // router.get('/new', (req, res) => {});
 
 router.post('/', (req, res) => {
   let product = req.body;
-  dataBase.addProduct(product);
-  res.send('information was sent');
-  res.end();
+  if (dataBase.addProduct(product) == true) {
+    res.redirect('/products/new');
+  } else {
+    res.redirect('/products/');
+  }
 });
 
 router.delete('/:id', (req, res) => {
