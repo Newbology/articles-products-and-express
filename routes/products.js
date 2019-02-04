@@ -28,11 +28,8 @@ router.get('/new', (req, res) => {
 
 router.post('/', (req, res) => {
   let product = req.body;
-  if (!dataBase.addProduct(product)) {
-    res.redirect('/products/new');
-  } else {
-    res.redirect('/products/');
-  }
+  dataBase.addProduct(product);
+  res.redirect('/products/');
 });
 
 router.delete('/:id', (req, res) => {
