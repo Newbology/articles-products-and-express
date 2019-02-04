@@ -5,27 +5,32 @@ const dataBase = require('../db/products');
 router.get('/', (req, res) => {
   let products = dataBase.getAllproducts();
   res.render('products/index', { products });
-}).post('/', (req, res) => {
-  let product = req.body;
-  dataBase.addProduct(product);
-  res.send('information was sent');
-  res.end();
 });
 
 router.get('/:id', (req, res) => {
   let id = Number(req.params.id);
-  let product = dataBase.getProductId(id);
-  res.render('products/product', { product });
+  let product = req.body;
+  let temp = [];
+  temp.push(dataBase.getProductId(id, product));
+  res.render('products/new', { temp });
 });
 
 router.get('/:id/edit', (req, res) => {
-  let id = Number(req.paramds.id);
-  let product = dataBase.getProductId(id);
-  res.render('products/edit', { product });
+  let id = Number(req.params.id);
+  let newProduct = req.body;
+  dataBase.updateProduct(id, newProduct);
+  res.render('products/edit', { newProduct });
 });
-// router.get('/new', (req, res) => {});
+router.get('/new', (req, res) => {
+  let product = req.body;
+  res.render('/products/new', product);
+});
 
-
+router.post('/', (req, res) => {
+  let product = req.body;
+  dataBase.addProduct(product);
+  res.redirect('/products/');
+});
 
 router.delete('/:id', (req, res) => {
   let id = Number(req.params.id);
@@ -37,7 +42,7 @@ router.put('/:id', (req, res) => {
   let id = Number(req.params.id);
   let newProduct = req.body;
   dataBase.updateProduct(id, newProduct);
-  res.redirect('/products');
+  res.redirect('/products/:id');
 });
 
 module.exports = router;
