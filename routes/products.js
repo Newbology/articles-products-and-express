@@ -11,22 +11,24 @@ router.get('/:id', (req, res) => {
   let id = Number(req.params.id);
   let product = req.body;
   let temp = [];
-
   temp.push(dataBase.getProductId(id, product));
-  console.log('temp', temp);
   res.render('products/new', { temp });
 });
 
-// router.get('/:id/edit', (req, res) => {
-//   let id = Number(req.params.id);
-
-//   res.render('templates/products/product', { products });
-// });
-// router.get('/new', (req, res) => {});
+router.get('/:id/edit', (req, res) => {
+  let id = Number(req.params.id);
+  let newProduct = req.body;
+  dataBase.updateProduct(id, newProduct);
+  res.render('products/edit', { newProduct });
+});
+router.get('/new', (req, res) => {
+  let product = req.body;
+  res.render('/products/new', product);
+});
 
 router.post('/', (req, res) => {
   let product = req.body;
-  if (dataBase.addProduct(product) == true) {
+  if (!dataBase.addProduct(product)) {
     res.redirect('/products/new');
   } else {
     res.redirect('/products/');
@@ -43,7 +45,7 @@ router.put('/:id', (req, res) => {
   let id = Number(req.params.id);
   let newProduct = req.body;
   dataBase.updateProduct(id, newProduct);
-  res.redirect('/products');
+  res.redirect('/products/:id');
 });
 
 module.exports = router;
