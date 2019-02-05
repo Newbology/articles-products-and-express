@@ -25,7 +25,6 @@ router.get('/:id', (req, res) => {
     .select('name', 'price', 'inventory')
     .where('id', id)
     .then(product => {
-      console.log('product[0]', product[0]);
       res.render('products/product', product[0]);
     });
 });
@@ -36,7 +35,6 @@ router.get('/:id/edit', (req, res) => {
     .select('id', 'name', 'price', 'inventory')
     .where('id', id)
     .then(product => {
-      console.log('product[0]', product[0]);
       res.render('products/edit', product[0]);
     });
 });

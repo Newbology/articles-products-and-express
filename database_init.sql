@@ -7,19 +7,20 @@ CREATE DATABASE articles_and_products OWNER newbology;
 DROP TABLE IF EXISTS products;
 CREATE TABLE products(
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  price INTEGER NOT NULL,
-  inventory INTEGER NOT NULL,
+  name VARCHAR(255) CHECK (length(name) > 0),
+  price INT CHECK (price > 0),
+  inventory INT CHECK (inventory > 0),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
 DROP TABLE IF EXISTS articles;
 CREATE TABLE articles(
   id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  author VARCHAR(255) NOT NULL,
-  body text,
-  urltitle VARCHAR(255),
+  url_title VARCHAR(255) CHECK (length(url_title) > 0),
+  title VARCHAR(255) CHECK (length(title) > 0),
+  author VARCHAR(255)  CHECK (length(author) > 0),
+  body text CHECK (length(url_title) > 0),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
