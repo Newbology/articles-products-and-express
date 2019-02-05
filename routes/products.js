@@ -1,48 +1,82 @@
 const express = require('express');
 const router = express.Router();
-const dataBase = require('../db/products');
+const knex = require('../database');
+
+let dataObject = {
+  products: null
+};
 
 router.get('/', (req, res) => {
-  let products = dataBase.getAllproducts();
-  res.render('products/index', { products });
+  knex('products')
+    .select('name', 'price', 'inventory')
+    .then(products => {
+      dataObject.products = products;
+      res.render('products/index', dataObject);
+    });
+});
+
+router.get('/new', (req, res) => {
+  res.render('products/new');
 });
 
 router.get('/:id', (req, res) => {
   let id = Number(req.params.id);
-  let product = req.body;
-  let temp = [];
-  temp.push(dataBase.getProductId(id, product));
-  res.render('products/new', { temp });
+  knex('products')
+    .select('name', 'price', 'inventory')
+    .where('id', id)
+    .then(product => {
+      console.log('product[0]', product[0]);
+      res.render('products/product', product[0]);
+    });
 });
 
 router.get('/:id/edit', (req, res) => {
   let id = Number(req.params.id);
-  let newProduct = req.body;
-  dataBase.updateProduct(id, newProduct);
-  res.render('products/edit', { newProduct });
-});
-router.get('/new', (req, res) => {
-  let product = req.body;
-  res.render('/products/new', product);
+  knex('products')
+    .select('id', 'name', 'price', 'inventory')
+    .where('id', id)
+    .then(product => {
+      console.log('product[0]', product[0]);
+      res.render('products/edit', product[0]);
+    });
 });
 
 router.post('/', (req, res) => {
-  let product = req.body;
-  dataBase.addProduct(product);
-  res.redirect('/products/');
+  let body = req.body;
+  knex('products')
+    .insert({
+      name: body.name,
+      price: parseInt(body.price),
+      inventory: parseInt(body.inventory)
+    })
+    .then(() => {
+      res.redirect('/products/');
+    });
 });
 
 router.delete('/:id', (req, res) => {
   let id = Number(req.params.id);
-  dataBase.deleteProduct(id);
-  res.redirect('/products');
+  knex('products')
+    .where('id', '=', id)
+    .del()
+    .then(() => {
+      res.redirect('/products');
+    });
 });
 
 router.put('/:id', (req, res) => {
   let id = Number(req.params.id);
-  let newProduct = req.body;
-  dataBase.updateProduct(id, newProduct);
-  res.redirect('/products/:id');
+  let body = req.body;
+  body.price = parseInt(body.price);
+  body.inventory = parseInt(body.inventory);
+  delete body._method;
+  knex('products')
+    .where('id', id)
+    .update(body)
+    .then(() => {
+      console.log('id', id);
+      res.redirect(`/products/${id}`);
+    });
 });
 
 module.exports = router;

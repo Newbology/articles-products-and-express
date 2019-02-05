@@ -1,11 +1,10 @@
 // Update with your config settings.
 
 module.exports = {
-
   development: {
     client: 'pg',
     connection: {
-      host:'localhost',
+      host: 'localhost',
       user: 'newbology',
       password: 'password',
       database: 'articles_and_products'
@@ -16,7 +15,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password'
     },
     pool: {
@@ -32,7 +31,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password'
     },
     pool: {
@@ -43,5 +42,4 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   }
-
 };
