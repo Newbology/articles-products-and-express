@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  knex('articles');
   res.render('articles/new');
 });
 
@@ -28,19 +27,18 @@ router.get('/:url_title', (req, res) => {
     .select('title', 'author', 'body')
     .where('url_title', '=', url_title)
     .then(article => {
-      articleData.article = article[0];
-      res.render('articles/article', articleData);
+      res.render('articles/article', article[0]);
     });
 });
 
 router.get('/:url_title/edit', (req, res) => {
   let url_title = req.params.url_title;
+  console.log('url_title', url_title);
   knex('articles')
-    .select('url_title,', 'title', 'author', 'body')
+    .select('url_title', 'title', 'author', 'body')
     .where('url_title', '=', url_title)
     .then(article => {
-      articleData.article = article[0];
-      res.render('articles/edit', articleData);
+      res.render('articles/edit', article[0]);
     });
 });
 
@@ -48,10 +46,10 @@ router.post('/', (req, res) => {
   let body = req.body;
   knex('articles')
     .insert({
-      url_title: encodeURI(req.body.title),
-      title: req.body.title,
-      author: req.body.author,
-      body: req.body.body
+      url_title: encodeURI(body.title),
+      title: body.title,
+      author: body.author,
+      body: body.body
     })
     .then(() => {
       res.redirect('articles/');
@@ -78,15 +76,13 @@ router.delete('/:url_title', (req, res) => {
 router.put('/:url_title', (req, res) => {
   let url_title = req.params.url_title;
   let article = req.body;
-  article.url_title = encodeURI(req.body.title);
+  article.url_title = encodeURI(article.title);
+  console.log('article.url_title', article.url_title);
   knex('articles')
     .where('url_title', '=', url_title)
     .update(article)
     .then(() => {
       res.redirect(`/articles/${article.url_title}`);
-    })
-    .catch(error => {
-      res.redirect(`/articles/${article.url_title}/edit`);
     });
 });
 module.exports = router;

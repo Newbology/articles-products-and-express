@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
   let id = Number(req.params.id);
   knex('products')
     .select('name', 'price', 'inventory')
-    .where('id', id)
+    .where('id', '=', id)
     .then(product => {
       res.render('products/product', product[0]);
     });
@@ -33,7 +33,7 @@ router.get('/:id/edit', (req, res) => {
   let id = Number(req.params.id);
   knex('products')
     .select('id', 'name', 'price', 'inventory')
-    .where('id', id)
+    .where('id', '=', id)
     .then(product => {
       res.render('products/edit', product[0]);
     });
@@ -72,7 +72,6 @@ router.put('/:id', (req, res) => {
     .where('id', id)
     .update(body)
     .then(() => {
-      console.log('id', id);
       res.redirect(`/products/${id}`);
     });
 });
